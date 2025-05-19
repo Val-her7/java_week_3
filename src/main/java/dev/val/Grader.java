@@ -1,3 +1,5 @@
+package dev.val;
+
 public class Grader {
     public char convertPointsToGrade(int points){
         if (points < 0){
