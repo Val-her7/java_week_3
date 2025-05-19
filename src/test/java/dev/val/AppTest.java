@@ -18,7 +18,12 @@ public class AppTest
     }
 
     @Test
-    public void testAddition(){
-        assertEquals(5, App.add(3,2));
+    void twoPlusTwoShouldEqualFour(){
+        assertEquals(4, App.add(2,2));
+    }
+
+    @Test
+    void fivePlusTwoShouldEqualSeven(){
+        assertEquals(7, App.add(5,2));
     }
 }
