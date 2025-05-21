@@ -26,7 +26,7 @@ public class CsvReadTest {
         CsvRead.CsvRow firstLine = data.get(0);
         assertEquals("Exports", firstLine.direction());
         assertEquals("2015", firstLine.Year());
-        assertEquals("01/01/2015", firstLine.date());
+        assertEquals("01", firstLine.month());
         assertEquals("Thursday", firstLine.weekday());
         assertEquals("All", firstLine.country());
         assertEquals("All", firstLine.commodity());

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CsvRead {
 
-    public static record CsvRow(String direction, String Year, String date, String weekday, String country,
+    public static record CsvRow(String direction, String Year, String month, String weekday, String country,
             String commodity, String transport_mode, String measure, String value) {
     }
 
@@ -39,6 +39,10 @@ public class CsvRead {
         return fields;
     }
 
+    public static String cleanDate(String date){
+        return date.substring(3, 5);
+    }
+
     public static List<CsvRead.CsvRow> readFile(String path) {
         List<CsvRead.CsvRow> data = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -47,7 +51,7 @@ public class CsvRead {
 
             while ((line = reader.readLine()) != null) {
                 List<String> row = parseQuotedLine(line);
-                data.add(new CsvRow(row.get(0), row.get(1), row.get(2), row.get(3), row.get(4), row.get(5), row.get(6),
+                data.add(new CsvRow(row.get(0), row.get(1), cleanDate(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6),
                         row.get(7), row.get(8)));
             }
         } catch (FileNotFoundException e) {
