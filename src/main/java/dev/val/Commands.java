@@ -86,4 +86,16 @@ public class Commands {
         }
         return uniqueValues;
     }
+
+    public void showCommands(){
+        System.out.println("""
+                        help: returns a list of available commands with a small description.
+                        help <command>: returns a full explanation of what the command does and what parameters it needs.
+                        monthly_total: returns the sum of both the export and import for a specified month of a specified year.
+                        monthly_average: returns the average of both the export and the import of a specified month of a specified year.
+                        yearly_total: returns an overview of all the monthly totals for a particular year. This command returns the total of each month for both import and export. Then it gives the yearly total for both import and export.
+                        yearly_average: returns an overview of all the montly averages for a particular year, for both import and export. Then it gives the yearly average for both import and export.
+                        overview: returns all the unique values that span the data set: years, countries, commodities, transportation modes and measures.
+                        """);
+    }
 }
