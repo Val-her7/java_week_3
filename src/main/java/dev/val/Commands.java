@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.TreeSet;
 
 import dev.val.CsvRead.CsvRow;
 
@@ -69,5 +71,19 @@ public class Commands {
                         && r.measure().equals(measure))
                 .collect(Collectors.groupingBy(CsvRow::month, LinkedHashMap::new,
                         Collectors.averagingDouble(c -> Double.parseDouble(c.value()))));
+    }
+
+    public Set<String> getOverview(String columnName){
+        Set<String> uniqueValues = new TreeSet<>();
+        for(CsvRow row: records){
+            switch(columnName){
+                case "Year" -> uniqueValues.add(row.Year());
+                case "Country" -> uniqueValues.add(row.country());
+                case "Commodity" -> uniqueValues.add(row.commodity());
+                case "Transport_Mode" -> uniqueValues.add(row.transport_mode());
+                case "Measure" -> uniqueValues.add(row.measure());
+            }
+        }
+        return uniqueValues;
     }
 }
