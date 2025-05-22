@@ -98,6 +98,8 @@ public class CommandsHandler {
                 for (String month : yearly_tot.keySet()) {
                     System.out.println(month + " | " + yearly_tot.get(month));
                 }
+                Long sumOfMonths = yearly_tot.values().stream().mapToLong(d -> d.longValue()).sum();
+                System.out.println("Yearly_Total | " + sumOfMonths);
             }
             case "YEARLY_AVERAGE" -> {
                 Map<String, String> params = askParameters(scanner, false);
@@ -113,6 +115,8 @@ public class CommandsHandler {
                 for (String month : yearly_avg.keySet()) {
                     System.out.println(month + " | " + yearly_avg.get(month));
                 }
+                Double avgOfMonths = yearly_avg.values().stream().mapToDouble(d -> d.doubleValue()).average().orElse(0);
+                System.out.println("Yearly_Total | " + avgOfMonths);
             }
             default -> System.out.println("Invalid command");
         }
