@@ -1,21 +1,53 @@
 package dev.val;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CommandsHandler {
     public Commands command;
 
-    public CommandsHandler(Commands command){
+    public CommandsHandler(Commands command) {
         this.command = command;
     }
 
-    public void execute(Scanner scanner, String input){
+    public static Map<String, String> askParameters(Scanner scanner, boolean monthNeeded) {
+        Map<String, String> params = new HashMap<>();
+
+        System.out.print("Year: ");
+        params.put("year", scanner.nextLine());
+
+        if (monthNeeded) {
+            System.out.print("Month(01, 02, 03, ...): ");
+            params.put("month", scanner.nextLine());
+        }
+
+        System.out.print("Country (default All): ");
+        String country = scanner.nextLine();
+        params.put("country", country.isEmpty() ? "All" : country);
+
+        System.out.print("Commodity (default All): ");
+        String commodity = scanner.nextLine();
+        params.put("commodity", commodity.isEmpty() ? "All" : commodity);
+
+        System.out.print("Transport_Mode (default All): ");
+        String transport = scanner.nextLine();
+        params.put("transport", transport.isEmpty() ? "All" : transport);
+
+        System.out.print("Measure (default $): ");
+        String measure = scanner.nextLine();
+        params.put("measure", measure.isEmpty() ? "$" : measure);
+
+        return params;
+    }
+
+    public void execute(Scanner scanner, String input) {
         String[] inputCommand = input.trim().split(" ");
         String instruction = inputCommand[0];
 
-        switch(instruction){
+        switch (instruction) {
             case "HELP" -> {
-                if(inputCommand.length == 1){
+                if (inputCommand.length == 1) {
                     command.showCommands();
                 } else {
                     command.showCommands(inputCommand[1].replaceAll("[<>]", ""));
@@ -29,30 +61,58 @@ public class CommandsHandler {
                 System.out.println("Measures: " + command.getOverview("Measure"));
             }
             case "MONTHLY_TOTAL" -> {
-
-                System.out.print("Year: ");
-                String year = scanner.nextLine();
-
-                System.out.print("Month: ");
-                String month = scanner.nextLine();
-
-                System.out.print("Country (default All): ");
-                String countryInput = scanner.nextLine();
-                String country = countryInput.isEmpty() ? "All" : countryInput;
-
-                System.out.print("Commodity (default All): ");
-                String commodityInput = scanner.nextLine();
-                String commodity = commodityInput.isEmpty() ? "All" : commodityInput;
-
-                System.out.print("Transport_Mode (default All): ");
-                String transportModeInput = scanner.nextLine();
-                String transportMode = transportModeInput.isEmpty() ? "All" : transportModeInput;
-
-                System.out.println("Measure (default $): ");
-                String measureInput = scanner.nextLine();
-                String measure = measureInput.isEmpty() ? "$" : measureInput;
-
-                System.out.println(command.getMonthlyTotal(year, month, country, commodity, transportMode, measure));
+                Map<String, String> params = askParameters(scanner, true);
+                System.out.println(" The sum of both the export and import for " + params.get("month") + "/"
+                        + params.get("year") + " = " + command.getMonthlyTotal(
+                                params.get("year"),
+                                params.get("month"),
+                                params.get("country"),
+                                params.get("commodity"),
+                                params.get("transport"),
+                                params.get("measure"))
+                        + " " + params.get("measure"));
+            }
+            case "MONTHLY_AVERAGE" -> {
+                Map<String, String> params = askParameters(scanner, true);
+                System.out.println(" The average of both the export and import for " + params.get("month") + "/"
+                        + params.get("year") + " = " + command.getMonthlyAverage(
+                                params.get("year"),
+                                params.get("month"),
+                                params.get("country"),
+                                params.get("commodity"),
+                                params.get("transport"),
+                                params.get("measure"))
+                        + " " + params.get("measure"));
+            }
+            case "YEARLY_TOTAL" -> {
+                Map<String, String> params = askParameters(scanner, false);
+                Map<String, Long> yearly_tot = command.getYearlyTotal(
+                        params.get("year"),
+                        params.get("country"),
+                        params.get("commodity"),
+                        params.get("transport"),
+                        params.get("measure"));
+                System.out.println("--------------------------------");
+                System.out.println("Months | Sum(Imports + Exports)");
+                System.out.println("--------------------------------");
+                for (String month : yearly_tot.keySet()) {
+                    System.out.println(month + " | " + yearly_tot.get(month));
+                }
+            }
+            case "YEARLY_AVERAGE" -> {
+                Map<String, String> params = askParameters(scanner, false);
+                Map<String, Double> yearly_avg = command.getYearlyAverage(
+                        params.get("year"),
+                        params.get("country"),
+                        params.get("commodity"),
+                        params.get("transport"),
+                        params.get("measure"));
+                System.out.println("--------------------------------");
+                System.out.println("Months | Average(Imports + Exports)");
+                System.out.println("--------------------------------");
+                for (String month : yearly_avg.keySet()) {
+                    System.out.println(month + " | " + yearly_avg.get(month));
+                }
             }
             default -> System.out.println("Invalid command");
         }
