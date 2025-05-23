@@ -127,5 +127,41 @@ public class Main {
 //Hello from A
 //Hello from C
 ```
-## 🎯****
-## 🎯****
+## 🎯**Understand why inheritance and encapsulation are most of the time conflicting (extra).**
+
+### Encapsulation
+- Hides internal implementation details.
+- Promotes data protection and controlled access.
+
+### Inheritance
+- Enables code reuse by extending existing classes.
+- Makes subclasses dependent on parent class implementation.
+
+### The Conflict
+- Inheritance can break encapsulation by exposing internal details of the parent class to subclasses.
+- Subclasses may become tightly coupled to the parent's internal logic.
+- Changes in the parent class can lead to unexpected issues in subclasses.
+
+### Key Takeaway
+Use inheritance carefully. Favor composition over inheritance when encapsulation and modularity are critical.
+
+## 🎯**Understand polymorphism and its relation to abstraction. Know how to use polymorphism in java**
+
+### What is Polymorphism?
+- Ability of objects to take multiple forms.
+- Allows treating different classes through a common interface or abstract class.
+
+### Relation to Abstraction
+- Abstraction defines the "what" (methods to implement) without the "how".
+- Polymorphism enables calling these abstract methods on various object types.
+
+### How to use in Java
+- Declare variables as an interface or abstract class type.
+- Assign objects of concrete classes implementing/extending these types.
+- Method calls on the abstract reference invoke the concrete class implementation at runtime (dynamic binding).
+
+### Example
+```java
+Animal animal = new Dog();  // Dog extends Animal
+animal.makeSound();         // Calls Dog's implementation
+```
